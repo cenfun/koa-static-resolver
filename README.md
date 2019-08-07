@@ -48,5 +48,5 @@ app.use(KSR({
 ```
 
 ## CHANGELOG
-+ v1.0.1
-  - init
++ v1.0.2
+  - fixed livereload

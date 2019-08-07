@@ -92,9 +92,8 @@ const defaultOption = {
             return;
         }
 
-        let referer = ctx.request.get("Referer");
         let fileType = path.extname(item.filePath);
-        if (referer || fileType !== ".html") {
+        if (fileType !== ".html") {
             return;
         }
 
