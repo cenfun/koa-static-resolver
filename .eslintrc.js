@@ -19,7 +19,7 @@ module.exports = {
     "root": true,
 
     "parserOptions": {
-        "ecmaVersion": 9,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
 
@@ -55,10 +55,13 @@ module.exports = {
 
         "max-params": ["error", 8],
         "max-depth": ["error", 4],
-        "max-statements": ["error", 25],
-        "complexity": ["error", 8],
+        "max-statements": ["error", 30],
+        "complexity": ["error", 5],
         "max-len": ["error", 200],
         "max-nested-callbacks": ["error", 3],
+
+        "no-prototype-builtins": "off",
+        "require-atomic-updates": "off",
 
         "indent": ["error", 4, {
             "SwitchCase": 1,
