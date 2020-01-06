@@ -33,6 +33,7 @@ const defaultOption = {
     },
 
     //====================================
+    //max-age=<seconds>
     maxAge: null,
     maxAgeHandler: async (ctx, option, item) => {
         if (option.maxAge === null) {

@@ -25,7 +25,7 @@ app.use(KSR({
     dirs: ["./static/"],
     //server cache
     cache: {},
-    //browser cache
+    //browser cache header: max-age=<seconds>
     maxAge: 600
 }));
 ```
