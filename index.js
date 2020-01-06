@@ -35,7 +35,7 @@ const defaultOption = {
     //====================================
     maxAge: null,
     maxAgeHandler: async (ctx, option, item) => {
-        if (option.maxAge !== null) {
+        if (option.maxAge === null) {
             return;
         }
         if (!ctx.response.get('Cache-Control')) {

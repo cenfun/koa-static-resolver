@@ -1,11 +1,11 @@
 {
-  "name": "koa-static-resolver",
-  "version": "1.0.2",
-  "description": "Koa static file resolver, dirs, default index, path replace, cache, livereload, gzip",
-  "main": "index.js",
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cenfun/koa-static-resolver.git"
-  }
+    "name": "koa-static-resolver",
+    "version": "1.0.3",
+    "description": "Koa static file resolver, dirs, default index, path replace, cache, livereload, gzip",
+    "main": "index.js",
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cenfun/koa-static-resolver.git"
+    }
 }

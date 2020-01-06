@@ -48,5 +48,8 @@ app.use(KSR({
 ```
 
 ## CHANGELOG
++ v1.0.3
+  - fixed cache issue if maxAge=0
+
 + v1.0.2
   - fixed livereload
