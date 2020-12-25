@@ -1,10 +1,12 @@
 const fs = require("fs");
 const path = require("path");
-const zlib = require('zlib');
+const zlib = require("zlib");
 
 const defaultOption = {
 
     dirs: ["./static/"],
+    include: [],
+    exclude: [],
     defaultIndex: "index.html",
 
     //====================================
@@ -12,13 +14,13 @@ const defaultOption = {
 
     //====================================
     replace: null,
-    replaceHandler: async (ctx, option, item) => {
+    replaceHandler: (ctx, option, item) => {
         if (!option.replace) {
             return;
         }
         let p = path.normalize(decodeURIComponent(ctx.path));
         Object.keys(option.replace).forEach(function(k) {
-            let v = option.replace[k];
+            const v = option.replace[k];
             p = p.replace(new RegExp(k, "g"), v);
         });
         item.path = p;
@@ -26,7 +28,7 @@ const defaultOption = {
 
     //====================================
     headers: null,
-    headersHandler: async (ctx, option, item) => {
+    headersHandler: (ctx, option, item) => {
         if (option.headers) {
             ctx.set(option.headers);
         }
@@ -35,24 +37,24 @@ const defaultOption = {
     //====================================
     //max-age=<seconds>
     maxAge: null,
-    maxAgeHandler: async (ctx, option, item) => {
+    maxAgeHandler: (ctx, option, item) => {
         if (option.maxAge === null) {
             return;
         }
-        if (!ctx.response.get('Cache-Control')) {
-            ctx.set('Cache-Control', "max-age=" + option.maxAge);
+        if (!ctx.response.get("Cache-Control")) {
+            ctx.set("Cache-Control", `max-age=${option.maxAge}`);
         }
     },
 
     //====================================
     cache: null,
     cacheMaxLength: 10 * 1024 * 1024,
-    getCacheHandler: async (ctx, option, item) => {
+    getCacheHandler: (ctx, option, item) => {
         if (!option.cache) {
             return;
         }
 
-        let cacheItem = option.cache[item.filePath];
+        const cacheItem = option.cache[item.filePath];
         if (!cacheItem) {
             return;
         }
@@ -70,7 +72,7 @@ const defaultOption = {
         item.contentEncoding = cacheItem.contentEncoding;
         item.contentLength = cacheItem.contentLength;
     },
-    setCacheHandler: async (ctx, option, item) => {
+    setCacheHandler: (ctx, option, item) => {
         if (!option.cache) {
             return;
         }
@@ -81,34 +83,34 @@ const defaultOption = {
     },
 
     //====================================
-    fileBodyHandler: async (ctx, option, item) => {
+    fileBodyHandler: (ctx, option, item) => {
         item.body = fs.readFileSync(item.filePath);
     },
 
     //====================================
-    livereload: '',
+    livereload: "",
     /*eslint-disable complexity*/
-    livereloadHandler: async (ctx, option, item) => {
+    livereloadHandler: (ctx, option, item) => {
         if (!option.livereload || !item.body) {
             return;
         }
 
-        let fileType = path.extname(item.filePath);
+        const fileType = path.extname(item.filePath);
         if (fileType !== ".html") {
             return;
         }
 
         if (Buffer.isBuffer(item.body)) {
-            item.body = item.body.toString('utf8');
+            item.body = item.body.toString("utf8");
         }
 
         if (typeof(item.body) !== "string") {
             return;
         }
 
-        let script = option.livereload + "";
+        const script = `${option.livereload}`;
 
-        let lastIndex = item.body.lastIndexOf("</body>");
+        const lastIndex = item.body.lastIndexOf("</body>");
         if (lastIndex === -1) {
             item.body += script;
         } else {
@@ -125,19 +127,19 @@ const defaultOption = {
     gzipMinLength: 1024,
     gzipTypes: [".html", ".css", ".js", ".svg", ".xml"],
     /*eslint-disable complexity*/
-    gzipHandler: async (ctx, option, item) => {
+    gzipHandler: (ctx, option, item) => {
         if (!option.gzip || !option.cache || !item.body) {
             return;
         }
 
-        let fileSize = item.stats.size;
-        let fileType = path.extname(item.filePath);
-        let isAllowType = option.gzipTypes.includes(fileType);
+        const fileSize = item.stats.size;
+        const fileType = path.extname(item.filePath);
+        const isAllowType = option.gzipTypes.includes(fileType);
         if (fileSize <= option.gzipMinLength || !isAllowType) {
             return;
         }
 
-        let encoding = ctx.acceptsEncodings('gzip');
+        const encoding = ctx.acceptsEncodings("gzip");
         if (!encoding) {
             return;
         }
@@ -157,7 +159,7 @@ const defaultOption = {
     },
     /*eslint-enable complexity*/
 
-    fileHeadHandler: async (ctx, option, item) => {
+    fileHeadHandler: (ctx, option, item) => {
 
         if (!item.contentLength) {
             item.contentLength = item.stats.size;
@@ -170,18 +172,18 @@ const defaultOption = {
 
         //may from cache
         if (item.contentEncoding) {
-            ctx.response.set('Content-Encoding', item.contentEncoding);
+            ctx.response.set("Content-Encoding", item.contentEncoding);
         }
     },
 
     //====================================
-    afterHandler: async (ctx, option, item) => {}
+    afterHandler: (ctx, option, item) => {}
 
 };
 
 //===================================================================================
 
-const getPathStats = async (p) => {
+const getPathStats = (p) => {
     return new Promise((resolve) => {
         fs.stat(p, (err, stats) => {
             if (err) {
@@ -191,6 +193,14 @@ const getPathStats = async (p) => {
             resolve(stats);
         });
     });
+};
+
+// \ to /
+const formatPath = function(str) {
+    if (str) {
+        str = str.replace(/\\/g, "/");
+    }
+    return str;
 };
 
 //===================================================================================
@@ -206,12 +216,12 @@ const createFileItem = async (option, item) => {
         return false;
     }
     //check if has default index file
-    let filePath = path.resolve(item.localPath, option.defaultIndex);
+    const filePath = path.resolve(item.localPath, option.defaultIndex);
     if (!fs.existsSync(filePath)) {
         return false;
     }
     //new stats for index file
-    let stats = await getPathStats(filePath);
+    const stats = await getPathStats(filePath);
     if (!stats) {
         return false;
     }
@@ -221,13 +231,44 @@ const createFileItem = async (option, item) => {
 
 };
 
+const isIncludePath = (option, localPath) => {
+    const include = option.include;
+    if (!include || !include.length) {
+        return true;
+    }
+    for (const item of include) {
+        if (localPath.match(item)) {
+            return true;
+        }
+    }
+    return false;
+};
+
+const isExcludePath = (option, localPath) => {
+    const exclude = option.exclude;
+    if (!exclude || !exclude.length) {
+        return false;
+    }
+    for (const item of exclude) {
+        if (localPath.match(item)) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const findFileItem = async (option, item) => {
-    for (let dir of option.dirs) {
+    for (const dir of option.dirs) {
+        //item.path always start with "/"", so just use normalize  
         let localPath = path.normalize(dir + item.path);
         if (!fs.existsSync(localPath)) {
             continue;
         }
-        let stats = await getPathStats(localPath);
+        localPath = formatPath(localPath);
+        if (!isIncludePath(option, localPath) || isExcludePath(option, localPath)) {
+            continue;
+        }
+        const stats = await getPathStats(localPath);
         if (!stats) {
             continue;
         }
@@ -273,13 +314,13 @@ const handleFile = async (ctx, option, item) => {
 };
 
 const handleItem = async (ctx, option) => {
-    let item = {};
+    const item = {};
     await option.replaceHandler(ctx, option, item);
     item.path = item.path || ctx.path;
     if (!await findFileItem(option, item)) {
         return;
     }
-    return await handleFile(ctx, option, item);
+    return handleFile(ctx, option, item);
 };
 
 module.exports = (option) => {
@@ -293,7 +334,7 @@ module.exports = (option) => {
     return async (ctx, next) => {
         await next();
         //only handler head and get method
-        if (ctx.method !== 'HEAD' && ctx.method !== 'GET') {
+        if (ctx.method !== "HEAD" && ctx.method !== "GET") {
             return;
         }
         //response is already handled
@@ -301,7 +342,7 @@ module.exports = (option) => {
             return;
         }
         await option.beforeHandler(ctx, option);
-        let item = await handleItem(ctx, option);
+        const item = await handleItem(ctx, option);
         await option.afterHandler(ctx, option, item);
     };
 };

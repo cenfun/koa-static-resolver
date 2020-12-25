@@ -13,7 +13,9 @@ const Koa = require('koa');
 const KSR = require('koa-static-resolver');
 const app = new Koa();
 app.use(KSR({
-    dirs: ["./static/"],
+    dirs: ["./static/", "../node_modules/"],
+    include: ["include_str", /include_regexp/],
+    exclude: ["exclude_str", /exclude_regexp/],
     defaultIndex: "index.html"
 }));
 app.listen(8080);
@@ -48,6 +50,9 @@ app.use(KSR({
 ```
 
 ## CHANGELOG
++ v1.0.4
+  - added include/exclude match for file path
+
 + v1.0.3
   - fixed cache issue if maxAge=0
 
