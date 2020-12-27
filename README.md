@@ -14,42 +14,84 @@ const KSR = require('koa-static-resolver');
 const app = new Koa();
 app.use(KSR({
     dirs: ["./static/", "../node_modules/"],
-    include: ["include_str", /include_regexp/],
-    exclude: ["exclude_str", /exclude_regexp/],
     defaultIndex: "index.html"
 }));
 app.listen(8080);
 ```
 
-## Cache
+## cache
 ```js
 app.use(KSR({
     dirs: ["./static/"],
-    //server cache
+    //server cache (Memory)
     cache: {},
+    //do NOT cache big size file
+    cacheMaxLength: 10 * 1024 * 1024,
     //browser cache header: max-age=<seconds>
     maxAge: 600
 }));
 ```
 
-## Livereload
+## livereload
 ```js
 app.use(KSR({
     dirs: ["./static/"],
     livereload: '\n<script src="/livereload.js"></script>\n'
 }));
+//only inject to .html
 ```
 
-## Gzip
+## gzip
 ```js
 app.use(KSR({
     dirs: ["./static/"],
     cache: {},
-    gzip: true
+    gzip: true,
+    gzipMinLength: 1024,
+    gzipTypes: [".html", ".css", ".js", ".svg", ".xml"]
+}));
+//require headers with "Accept-Encoding": "gzip"
+```
+
+## include/exclude
+```js
+app.use(KSR({
+    dirs: ["./static/"],
+    include: ["include/folder", /RegExp/],
+    exclude: ["exclude/folder", /RegExp/]
+}));
+// any files not matched include/folder will be 404 not found
+// any files matched exclude/folder will be 404 not found
+// support RegExp
+```
+
+## replace
+```js
+app.use(KSR({
+    dirs: ["./static/"],
+    replace: {
+      "from_path": "to_path"
+    }
+}));
+//when request /from_path/some_next_path/, will be replaced with /to_path/some_next_path/ to find out file path
+```
+
+## headers
+```js
+app.use(KSR({
+    dirs: ["./static/"],
+    headers: {
+      "header_key": "header_value"
+    }
 }));
 ```
 
+
 ## CHANGELOG
+
++ v1.0.5
+  - added test case
+
 + v1.0.4
   - added include/exclude match for file path
 
