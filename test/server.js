@@ -20,9 +20,11 @@ if (!fs.existsSync(tempPath)) {
     });
 }
 
-// create index.html
+// create test files
 fs.writeFileSync(path.resolve(tempPath, 'index.html'), 'this is index.html');
 fs.writeFileSync(path.resolve(tempPath, 'readme.md'), 'this is readme.md');
+fs.writeFileSync(path.resolve(tempPath, 'filename with space.html'), 'this is filename with space.html');
+fs.writeFileSync(path.resolve(tempPath, '中文 文件名.html'), 'this is 中文 文件名.html');
 
 let str = '';
 while (str.length < gzipMinLength) {

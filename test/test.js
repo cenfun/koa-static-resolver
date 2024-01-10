@@ -49,6 +49,56 @@ describe('init', function() {
         assert.equal(res.data, 'this is readme.md');
     });
 
+    it('check filename with space.html', async () => {
+        let err;
+        const res = await axios.get(`http://localhost:${port}/filename with space.html`).catch(function(e) {
+            err = e;
+        });
+        assert.ok(res);
+        assert.ok(!err);
+        assert.equal(res.data, 'this is filename with space.html<div class="livereload"></div>');
+    });
+
+    it('check filename%20with%20space.html', async () => {
+        let err;
+        const res = await axios.get(`http://localhost:${port}/filename%20with%20space.html`).catch(function(e) {
+            err = e;
+        });
+        assert.ok(res);
+        assert.ok(!err);
+        assert.equal(res.data, 'this is filename with space.html<div class="livereload"></div>');
+    });
+
+    it('check 中文 文件名.html', async () => {
+        let err;
+        const res = await axios.get(`http://localhost:${port}/中文 文件名.html`).catch(function(e) {
+            err = e;
+        });
+        assert.ok(res);
+        assert.ok(!err);
+        assert.equal(res.data, 'this is 中文 文件名.html<div class="livereload"></div>');
+    });
+
+    it('check 中文%20文件名.html', async () => {
+        let err;
+        const res = await axios.get(`http://localhost:${port}/中文%20文件名.html`).catch(function(e) {
+            err = e;
+        });
+        assert.ok(res);
+        assert.ok(!err);
+        assert.equal(res.data, 'this is 中文 文件名.html<div class="livereload"></div>');
+    });
+
+    it('check %E4%B8%AD%E6%96%87%20%E6%96%87%E4%BB%B6%E5%90%8D.html', async () => {
+        let err;
+        const res = await axios.get(`http://localhost:${port}/%E4%B8%AD%E6%96%87%20%E6%96%87%E4%BB%B6%E5%90%8D.html`).catch(function(e) {
+            err = e;
+        });
+        assert.ok(res);
+        assert.ok(!err);
+        assert.equal(res.data, 'this is 中文 文件名.html<div class="livereload"></div>');
+    });
+
     it('check 404', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/not_found.html`).catch(function(e) {
