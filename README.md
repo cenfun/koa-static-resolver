@@ -2,6 +2,10 @@
 # Koa Static Resolver
 > Koa static file resolver, dirs, default index, path replace, cache, livereload, gzip
 
+[![](https://img.shields.io/npm/v/koa-static-resolver)](https://www.npmjs.com/package/koa-static-resolver)
+[![](https://badgen.net/npm/dw/koa-static-resolver)](https://www.npmjs.com/package/koa-static-resolver)
+![](https://img.shields.io/github/license/cenfun/koa-static-resolver)
+
 ## Install 
 ```sh
 npm install koa-static-resolver --save
