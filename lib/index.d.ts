@@ -5,7 +5,7 @@ declare namespace KSR {
 
     type KSRItem = any;
 
-    type ItemHandler = (ctx: KoaContext, options: KSROptions, item: KSRItem) => void;
+    export type ItemHandler = (ctx: KoaContext, options: KSROptions, item: KSRItem) => void;
 
     export interface KSROptions {
         dirs?: string[];
@@ -47,9 +47,9 @@ declare namespace KSR {
 
         afterHandler?: ItemHandler;
 
-    };
+    }
 
-    export async function Middleware(ctx: KoaContext, next: KoaNext): void;
+    export type Middleware = (ctx: KoaContext, next: KoaNext) => void;
 }
 
 declare function KSR(options: KSR.KSROptions): KSR.Middleware;
