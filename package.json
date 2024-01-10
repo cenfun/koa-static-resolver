@@ -1,6 +1,6 @@
 {
     "name": "koa-static-resolver",
-    "version": "1.0.5",
+    "version": "1.0.4",
     "description": "Koa static file resolver, dirs, default index, path replace, cache, livereload, gzip",
     "main": "./lib/index.js",
     "exports": {
