@@ -25,6 +25,7 @@
         "type": "git",
         "url": "https://github.com/cenfun/koa-static-resolver.git"
     },
+    "dependencies": {},
     "devDependencies": {
         "axios": "^1.6.5",
         "eslint": "^8.56.0",

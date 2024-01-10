@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const Koa = require('koa');
-const KSR = require('../index.js');
+const KSR = require('../');
 
 const rootPath = path.resolve(__dirname, '../');
 console.log(`rootPath: ${rootPath}`);
