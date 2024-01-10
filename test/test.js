@@ -1,14 +1,14 @@
-const axios = require("axios");
-const assert = require("assert");
+const axios = require('axios');
+const assert = require('assert');
 
 const port = 8080;
 let server;
 
-describe("init", function() {
+describe('init', function() {
     this.timeout(20 * 1000);
 
     before(() => {
-        server = require("./server.js");
+        server = require('./server.js');
     });
 
     after(() => {
@@ -16,7 +16,7 @@ describe("init", function() {
     });
 
 
-    it("check / and livereload", async () => {
+    it('check / and livereload', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/`).catch(function(e) {
             err = e;
@@ -24,12 +24,12 @@ describe("init", function() {
         assert.ok(res);
         assert.ok(!err);
         assert.equal(res.data, 'this is index.html<div class="livereload"></div>');
-        //console.log(res.headers);
-        assert.equal(res.headers.header_key, "header_value");
-        assert.equal(res.headers["cache-control"], "max-age=600");
+        // console.log(res.headers);
+        assert.equal(res.headers.header_key, 'header_value');
+        assert.equal(res.headers['cache-control'], 'max-age=600');
     });
 
-    it("check index.html and livereload", async () => {
+    it('check index.html and livereload', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/index.html`).catch(function(e) {
             err = e;
@@ -39,17 +39,17 @@ describe("init", function() {
         assert.equal(res.data, 'this is index.html<div class="livereload"></div>');
     });
 
-    it("check readme.md and no livereload", async () => {
+    it('check readme.md and no livereload', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/readme.md`).catch(function(e) {
             err = e;
         });
         assert.ok(res);
         assert.ok(!err);
-        assert.equal(res.data, "this is readme.md");
+        assert.equal(res.data, 'this is readme.md');
     });
 
-    it("check 404", async () => {
+    it('check 404', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/not_found.html`).catch(function(e) {
             err = e;
@@ -59,7 +59,7 @@ describe("init", function() {
         assert.equal(err.response.status, 404);
     });
 
-    it("check include and livereload", async () => {
+    it('check include and livereload', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/include/`).catch(function(e) {
             err = e;
@@ -69,7 +69,7 @@ describe("init", function() {
         assert.equal(res.data, 'this is include<div class="livereload"></div>');
     });
 
-    it("check replace and livereload", async () => {
+    it('check replace and livereload', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/from_replace/`).catch(function(e) {
             err = e;
@@ -79,7 +79,7 @@ describe("init", function() {
         assert.equal(res.data, 'this is replace<div class="livereload"></div>');
     });
 
-    it("check exclude", async () => {
+    it('check exclude', async () => {
         let err;
         const res = await axios.get(`http://localhost:${port}/exclude/`).catch(function(e) {
             err = e;
@@ -89,27 +89,27 @@ describe("init", function() {
         assert.equal(err.response.status, 404);
     });
 
-    it("check gzip with accept gzip", async () => {
+    it('check gzip with accept gzip', async () => {
         let err;
         const res = await axios({
             url: `http://localhost:${port}/gzip.html`,
-            method: "get",
+            method: 'get',
             decompress: false,
             headers: {
-                "request_key": "request_value",
-                "Accept-Encoding": "gzip, deflate, br"
+                'request_key': 'request_value',
+                'Accept-Encoding': 'gzip, deflate, br'
             }
         }).catch(function(e) {
             err = e;
         });
         assert.ok(res);
         assert.ok(!err);
-        //console.log(res.config.headers);
+        // console.log(res.config.headers);
         console.log(res.headers);
-        assert.equal(res.headers.header_key, "header_value");
-        assert.equal(res.headers["cache-control"], "max-age=600");
-        assert.equal(res.headers["content-encoding"], "gzip");
-        assert.ok(res.headers["content-length"], 1024);
+        assert.equal(res.headers.header_key, 'header_value');
+        assert.equal(res.headers['cache-control'], 'max-age=600');
+        assert.equal(res.headers['content-encoding'], 'gzip');
+        assert.ok(res.headers['content-length'], 1024);
     });
 
 });

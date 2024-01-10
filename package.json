@@ -2,23 +2,34 @@
     "name": "koa-static-resolver",
     "version": "1.0.5",
     "description": "Koa static file resolver, dirs, default index, path replace, cache, livereload, gzip",
-    "main": "index.js",
+    "main": "./lib/index.js",
+    "exports": {
+        ".": {
+            "types": "./lib/index.d.ts",
+            "import": "./lib/index.mjs",
+            "require": "./lib/index.js",
+            "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "types": "./lib/index.d.ts",
     "scripts": {
-        "test": "npx mocha ./test/test.js"
+        "test": "npx mocha ./test/test.js",
+        "patch": "npm run test && sf publish patch -r"
     },
     "files": [
-        "index.js"
+        "lib"
     ],
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/cenfun/koa-static-resolver.git"
     },
-    "dependencies": {},
     "devDependencies": {
-        "axios": "^1.6.2",
-        "eslint": "^8.54.0",
-        "koa": "^2.14.2",
+        "axios": "^1.6.5",
+        "eslint": "^8.56.0",
+        "eslint-config-plus": "^1.0.6",
+        "koa": "^2.15.0",
         "mocha": "^10.2.0"
     }
 }

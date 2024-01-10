@@ -91,6 +91,7 @@ app.use(KSR({
 
 + v1.0.5
   - added test case
+  - added types
 
 + v1.0.4
   - added include/exclude match for file path
